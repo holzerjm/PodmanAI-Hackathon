@@ -51,10 +51,9 @@ rag-doc-qa/
 ├── Containerfile          # App container image
 ├── compose.yml            # Full stack: Ollama + App
 ├── README.md
-├── app/
-│   ├── app.py             # Streamlit application
-│   └── requirements.txt   # Python dependencies
-└── docs/                  # Sample documents (optional)
+└── app/
+    ├── app.py             # Streamlit application
+    └── requirements.txt   # Python dependencies
 ```
 
 ## Judging Criteria Alignment
