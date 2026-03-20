@@ -4,9 +4,19 @@
 
 All apps run entirely in Podman containers and showcase different approaches to AI integration: two fully local with Ollama, one cloud-powered via Anthropic Claude.
 
+## 📋 Quick Index
+
+| Level | App | Description | Port |
+|-------|-----|-------------|------|
+| **Beginner** | [📖 AI Story Forge](#ai-story-forge) | Choose-your-own-adventure with local AI | [8503](http://localhost:8503) |
+| **Intermediate** | [📚 RAG Document Q&A](#rag-document-qa) | Upload docs & chat with them — fully local | [8501](http://localhost:8501) |
+| **Intermediate/Advanced** | [🔍 AI Code Reviewer](#ai-code-reviewer) | Expert code reviews powered by Claude | [8502](http://localhost:8502) |
+
 ---
 
 ## 📦 Projects
+
+<a id="rag-document-qa"></a>
 
 ### 📚 [RAG Document Q&A](./rag-doc-qa/)
 
@@ -32,6 +42,8 @@ podman compose up -d
 
 ---
 
+<a id="ai-code-reviewer"></a>
+
 ### 🔍 [AI Code Reviewer](./ai-code-reviewer/)
 
 Paste code and get **expert-level reviews** with a quality score, categorized findings, an improved version of your code, and plain-English explanations.
@@ -53,6 +65,8 @@ ANTHROPIC_API_KEY=sk-ant-... podman compose up -d
 > **Tip:** You can also enter your API key via the sidebar UI after launch. The key is session-only and never stored to disk.
 
 ---
+
+<a id="ai-story-forge"></a>
 
 ### 📖 [AI Story Forge](./ai-story-forge/)
 
