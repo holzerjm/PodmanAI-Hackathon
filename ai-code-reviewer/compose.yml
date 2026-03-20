@@ -1,0 +1,21 @@
+##
+## AI Code Reviewer — podman-compose
+## Usage: ANTHROPIC_API_KEY=sk-... podman-compose up -d
+## Then open http://localhost:8502
+##
+
+version: "3.9"
+
+services:
+  # ── Streamlit Code Reviewer App ─────────────────────────────
+  code-reviewer:
+    build:
+      context: .
+      dockerfile: Containerfile
+    container_name: ai-code-reviewer
+    ports:
+      - "8502:8502"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+    restart: unless-stopped

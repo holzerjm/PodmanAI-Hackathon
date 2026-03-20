@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+LABEL maintainer="Pods, Prompts & Prototypes Hackathon"
+LABEL description="RAG Document Q&A - Local AI with Ollama + ChromaDB"
+
+WORKDIR /app
+
+# Install system deps for chromadb and document parsing
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY app/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/ .
+
+# Pre-download the embedding model at build time for faster startup
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+
+EXPOSE 8501
+
+VOLUME ["/data"]
+
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+
+ENTRYPOINT ["streamlit", "run", "app.py", \
+    "--server.port=8501", \
+    "--server.address=0.0.0.0", \
+    "--server.headless=true", \
+    "--browser.gatherUsageStats=false"]
