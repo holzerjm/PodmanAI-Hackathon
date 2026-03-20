@@ -1,8 +1,8 @@
 # 🚀 PodmanAI-Hackathon
 
-**Pods, Prompts & Prototypes** — Two containerized AI applications built for the [Pods, Prompts & Prototypes Hackathon](https://the-open-accelerator.com/hackathon/upcoming/PodmanAI/) at The Open Accelerator, Boston.
+**Pods, Prompts & Prototypes** — Three containerized AI applications built for the [Pods, Prompts & Prototypes Hackathon](https://the-open-accelerator.com/hackathon/upcoming/PodmanAI/) at The Open Accelerator, Boston.
 
-Both apps run entirely in Podman containers and showcase different approaches to AI integration: one fully local with Ollama, the other cloud-powered via Anthropic Claude.
+All apps run entirely in Podman containers and showcase different approaches to AI integration: two fully local with Ollama, one cloud-powered via Anthropic Claude.
 
 ---
 
@@ -54,9 +54,28 @@ ANTHROPIC_API_KEY=sk-ant-... podman compose up -d
 
 ---
 
+### 📖 [AI Story Forge](./ai-story-forge/)
+
+Choose your own adventure with **local AI** — pick a genre, make choices, and watch an interactive story unfold in real time. Great for beginners!
+
+| Component | Technology |
+|-----------|-----------|
+| LLM | [Ollama](https://ollama.com/) — Granite 3.1 8B (local) |
+| Frontend | [Streamlit](https://streamlit.io/) |
+
+```bash
+cd ai-story-forge
+podman compose up -d
+# → http://localhost:8503
+```
+
+> **Note:** Shares the same Ollama model as the RAG app. If you've already run that app, startup is instant.
+
+---
+
 ## 🛠️ Shared Stack
 
-Both applications are built on a common foundation:
+All three applications are built on a common foundation:
 
 - **Containers** — [Podman](https://podman.io/) (rootless, daemonless, OCI-compliant)
 - **Compose** — `podman compose` with standard `compose.yml`
@@ -90,6 +109,14 @@ ANTHROPIC_API_KEY=sk-ant-... podman compose up -d
 # Open http://localhost:8502
 ```
 
+**AI Story Forge** (fully local — no API key needed):
+
+```bash
+cd ai-story-forge
+podman compose up -d
+# Open http://localhost:8503
+```
+
 ### 3. Stop an app
 
 ```bash
@@ -108,8 +135,8 @@ podman compose down -v
 |----------|-----|---------|-------------|
 | `ANTHROPIC_API_KEY` | Code Reviewer | *(none, required)* | Your Anthropic API key |
 | `ANTHROPIC_MODEL` | Code Reviewer | `claude-sonnet-4-20250514` | Claude model to use for reviews |
-| `OLLAMA_MODEL` | RAG Doc Q&A | `granite3.1-dense:8b` | Ollama model for generation |
-| `OLLAMA_BASE_URL` | RAG Doc Q&A | `http://ollama:11434` | Ollama server URL (set automatically by compose) |
+| `OLLAMA_MODEL` | RAG Doc Q&A, Story Forge | `granite3.1-dense:8b` | Ollama model for generation |
+| `OLLAMA_BASE_URL` | RAG Doc Q&A, Story Forge | `http://ollama:11434` | Ollama server URL (set automatically by compose) |
 
 ## 📁 Repository Structure
 
@@ -134,26 +161,36 @@ PodmanAI-Hackathon/
 │       ├── app.py
 │       └── requirements.txt
 │
+├── ai-story-forge/              # App 3 — Choose-your-own-adventure (Beginner)
+│   ├── Containerfile
+│   ├── compose.yml
+│   ├── .gitignore
+│   ├── README.md
+│   └── app/
+│       ├── app.py
+│       └── requirements.txt
+│
 ├── LICENSE
 └── README.md                    # ← You are here
 ```
 
 ## 🏆 Hackathon Alignment
 
-These projects target the **Intermediate** and **Intermediate/Advanced** challenge tiers of the Pods, Prompts & Prototypes hackathon, specifically:
+These projects span **Beginner**, **Intermediate**, and **Intermediate/Advanced** challenge tiers of the Pods, Prompts & Prototypes hackathon:
 
-- **RAG on Your Data** — local document retrieval and generation
-- **The Local AI API** — containerized AI microservice
+- **The Local AI API** — containerized AI microservice (Story Forge — Beginner)
+- **RAG on Your Data** — local document retrieval and generation (RAG Doc Q&A — Intermediate)
+- **AI-Powered Code Reviewer** — cloud-powered code analysis (Code Reviewer — Intermediate/Advanced)
 
-Both are designed around the hackathon judging rubric:
+All three are designed around the hackathon judging rubric:
 
 | Criterion | How We Address It |
 |-----------|-------------------|
-| **User Flow & UI/UX** | Dark-themed Streamlit UIs with intuitive chat and paste-to-review flows |
+| **User Flow & UI/UX** | Dark-themed Streamlit UIs with intuitive chat, paste-to-review, and interactive story flows |
 | **Engineering Quality** | Clean separation of concerns, structured prompts, proper RAG pipeline |
-| **Grounding & Verifiability** | Source citations (RAG), line-specific findings with diffs (Reviewer) |
-| **Creativity & Innovation** | Local-first zero-cloud RAG; structured code review with scoring |
-| **Real-World Fit** | Enterprise doc Q&A without data leaving the network; democratized code review |
+| **Grounding & Verifiability** | Source citations (RAG), line-specific findings with diffs (Reviewer), choice-driven narrative (Story Forge) |
+| **Creativity & Innovation** | Local-first zero-cloud RAG; structured code review with scoring; interactive fiction with AI |
+| **Real-World Fit** | Enterprise doc Q&A without data leaving the network; democratized code review; engaging AI demo for newcomers |
 
 ## 📋 Prerequisites
 
@@ -165,7 +202,7 @@ Both are designed around the hackathon judging rubric:
 
 | Issue | Solution |
 |-------|----------|
-| Port 8501 or 8502 already in use | Stop the conflicting process, or edit `ports` in the relevant `compose.yml` |
+| Port 8501, 8502, or 8503 already in use | Stop the conflicting process, or edit `ports` in the relevant `compose.yml` |
 | Ollama model download is slow | The Granite 3.1 8B model is ~4.9 GB. On slower connections, the initial pull may take 10+ minutes. Check progress with `podman logs rag-ollama-pull -f` |
 | RAG app says "Ollama not reachable" | Ensure the Ollama container is healthy: `podman ps` should show `rag-ollama` as running. If not, check logs: `podman logs rag-ollama` |
 | Code Reviewer returns auth error | Verify your `ANTHROPIC_API_KEY` is valid. You can also enter it via the sidebar UI |
@@ -192,6 +229,12 @@ OLLAMA_BASE_URL=http://localhost:11434 streamlit run app.py
 cd ai-code-reviewer/app
 pip install -r requirements.txt
 ANTHROPIC_API_KEY=sk-ant-... streamlit run app.py --server.port 8502
+
+# AI Story Forge
+cd ai-story-forge/app
+pip install -r requirements.txt
+# Requires a running Ollama instance at http://localhost:11434
+OLLAMA_BASE_URL=http://localhost:11434 streamlit run app.py --server.port 8503
 ```
 
 ## 📄 License
