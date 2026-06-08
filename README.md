@@ -1,5 +1,10 @@
 # 🚀 PodmanAI-Hackathon
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Made with Python](https://img.shields.io/badge/made%20with-Python-3776AB?logo=python&logoColor=white)](https://www.python.org)
+[![Podman](https://img.shields.io/badge/Podman-containers-892CA0?logo=podman&logoColor=white)](https://podman.io)
+[![Ollama](https://img.shields.io/badge/Ollama-local%20LLM-000000?logo=ollama&logoColor=white)](https://ollama.com)
+
 **Pods, Prompts & Prototypes** — Three containerized AI applications built for the [Pods, Prompts & Prototypes Hackathon](https://the-open-accelerator.com/hackathon/upcoming/PodmanAI/) at The Open Accelerator, Boston.
 
 All apps run entirely in Podman containers and showcase different approaches to AI integration: two fully local with Ollama, one cloud-powered via Anthropic Claude.
